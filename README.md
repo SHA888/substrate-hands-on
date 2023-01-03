@@ -228,3 +228,42 @@ by appending your own. A few useful ones are as follow.
 # Check whether the code is compilable
 ./scripts/docker_run.sh cargo check
 ```
+
+### Objectives
+- [ ] Get Started
+  - [ ] Build a local blockchain
+  - [ ] Simulate a network
+  - [ ] Add trusted nodes
+  - [ ] Authorise specific nodes
+  - [ ] Monitor node metrics
+  - [ ] Upgrade a running network
+- [ ] Work with pallets
+  - [ ] Add pallet to the runtime
+  - [ ] Configure the contracts pallet
+  - [ ] Use macros in a custom pallet
+  - [ ] Specify the origin for a call
+  - [ ] Publish custom pallets
+- [ ] Collectibles workshop
+  - [ ] Prepare a working environement
+  - [ ] Get oriented
+  - [ ] Create a new pallet
+  - [ ] Shared and custom types
+  - [ ] Add custom storage items
+  - [ ] Create basic functions
+  - [ ] More functions
+  - [ ] Add collectibles to the runtime
+- [ ] Develop smart contract
+  - [ ] Prepare your first contract
+  - [ ] Develop a smart contract
+  - [ ] Use maps for storing values
+  - [ ] Build a token contract
+  - [ ] Troubleshoot smart contracts
+- [ ] Connect Relay and Parachain
+  - [ ] Prepare a local relay chain
+  - [ ] Connect a local parachain
+  - [ ] Acquire a testnet slot
+  - [ ] Open message passing channels
+  - [ ] Transfer assets with XCM
+- [ ] Integrate with tools
+  - [ ] Integrate a light client node
+  - [ ] Access EVM accounts
