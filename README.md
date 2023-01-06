@@ -232,7 +232,7 @@ by appending your own. A few useful ones are as follow.
 ### Objectives
 - [x] Get Started
   - [x] Build a local blockchain
-  - [ ] Simulate a network
+  - [x] Simulate a network
   - [ ] Add trusted nodes
   - [ ] Authorise specific nodes
   - [ ] Monitor node metrics
