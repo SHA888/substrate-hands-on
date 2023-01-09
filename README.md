@@ -232,8 +232,8 @@ by appending your own. A few useful ones are as follow.
 ### Objectives
 - [x] Get Started
   - [x] Build a local blockchain
-  - [x] Simulate a network
-  - [ ] Add trusted nodes
+  - [x] [Simulate a network](/docs/simulate-a-network.md)
+  - [ ] [Add trusted nodes](/docs/add-trusted-node.md) (WIP)
   - [ ] Authorise specific nodes
   - [ ] Monitor node metrics
   - [ ] Upgrade a running network
