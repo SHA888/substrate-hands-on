@@ -234,7 +234,7 @@ by appending your own. A few useful ones are as follow.
   - [x] Build a local blockchain
   - [x] [Simulate a network](/docs/simulate-a-network.md)
   - [x] [Add trusted nodes](/docs/add-trusted-node.md)
-  - [ ] Authorise specific nodes
+  - [ ] Authorise specific nodes (`WIP`)
   - [ ] Monitor node metrics
   - [ ] Upgrade a running network
 - [ ] Work with pallets
