@@ -34,63 +34,74 @@ The `node-authorization` pallet uses an [offchain worker](https://docs.substrate
 ## Before you begin
 Before you begin, verify the following:
 
-You have configured your environment for Substrate development by installing Rust and the Rust toolchain.
-You have completed Build a local blockchain and have the Substrate node template installed locally.
-You have completed the Add trusted nodes tutorial.
-You are generally familiar with peer-to-peer networking in Substrate.
-Tutorial objectives
+- You have configured your environment for Substrate development by installing [Rust and the Rust toolchain](https://docs.substrate.io/install/).
+- You have completed [Build a local blockchain](../README.md) and have the Substrate node template installed locally.
+- You have completed the [Add trusted nodes](add-trusted-node.md) tutorial.
+- You are generally familiar with [peer-to-peer networking](https://wiki.polkadot.network/docs/faq#networking) in Substrate.
+
+## Tutorial objectives
 By completing this tutorial, you will accomplish the following objectives:
 
-Check out and compile the node template.
-Add the node authorization pallet to the node template runtime.
-Launch multiple nodes and authorize new nodes to join.
-Build the node template
+- Check out and compile the node template.
+- Add the node authorization pallet to the node template runtime.
+- Launch multiple nodes and authorize new nodes to join.
+
+## Build the node template
 If you have completed previous tutorials, you should have the Substrate node template repository available locally.
 
-Open a terminal shell on the computer where you have Substrate node template repository.
-Change to the root of the node template directory, if necessary, by running the following command:
+1. Open a terminal shell on the computer where you have Substrate node template repository.
+2. Change to the root of the node template directory, if necessary, by running the following command:
 
+```bash
 cd substrate-node-template
+```
 
-Switch to a working branch for the repository if you want to save your changes by running a command similar to the following:
+3. Switch to a working branch for the repository if you want to save your changes by running a command similar to the following:
 
+```bash
 git switch -c my-wip-branch
+```
 
-Compile the node template by running the following command:
+4. Compile the node template by running the following command:
 
+```bash
 cargo build --release
+```
 
-The node template should compile without any errors. If you encounter issues when you compile, you can try the troubleshooting tips in Troubleshoot Rust issues.
+The node template should compile without any errors. If you encounter issues when you compile, you can try the troubleshooting tips in [Troubleshoot Rust issues](https://docs.substrate.io/install/troubleshoot-rust-issues/).
 
-Add the node authorization pallet
+## Add the node authorization pallet
 Before you can use a new pallet, you must add some information about it to the configuration file that the compiler uses to build the runtime binary.
 
-For Rust programs, you use the Cargo.toml file to define the configuration settings and dependencies that determine what gets compiled in the resulting binary. Because the Substrate runtime compiles to both a native Rust binary that includes standard library functions and a WebAssembly (Wasm) binary that does not include the standard library, the Cargo.toml file controls two important pieces of information:
+For Rust programs, you use the Cargo.toml file to define the configuration settings and dependencies that determine what gets compiled in the resulting binary. Because the Substrate runtime compiles to both a native Rust binary that includes standard library functions and a [WebAssembly (Wasm)](https://webassembly.org/) binary that does not include the standard library, the `Cargo.toml` file controls two important pieces of information:
 
-The pallets to be imported as dependencies for the runtime, including the location and version of the pallets to import.
-The features in each pallet that should be enabled when compiling the native Rust binary. By enabling the standard (std) feature set from each pallet, you can compile the runtime to include functions, types, and primitives that would otherwise be missing when you build the WebAssembly binary.
-For general information about adding dependencies in Cargo.toml files, see Dependencies in the Cargo documentation. For information about enabling and managing features from dependent packages, see Features in the Cargo documentation.
+- The pallets to be imported as dependencies for the runtime, including the location and version of the pallets to import.
+- The features in each pallet that should be enabled when compiling the native Rust binary. By enabling the standard (`std`) feature set from each pallet, you can compile the runtime to include functions, types, and primitives that would otherwise be missing when you build the WebAssembly binary.
 
-Add node-authorization dependencies
-To add the node-authorization pallet to the Substrate runtime:
+For general information about adding dependencies in `Cargo.toml` files, see [Dependencies](https://doc.rust-lang.org/cargo/guide/dependencies.html) in the Cargo documentation. For information about enabling and managing features from dependent packages, see [Features](https://doc.rust-lang.org/cargo/reference/features.html) in the Cargo documentation.
 
-Open a terminal shell and change to the root directory for the node template.
-Open the runtime/Cargo.toml configuration file in a text editor.
-Locate the [dependencies] section and add the pallet-node-authorization crate to make it available to the node template runtime.
+### Add node-authorization dependencies
+To add the `node-authorization` pallet to the Substrate runtime:
 
+1. Open a terminal shell and change to the root directory for the node template.
+2. Open the `runtime/Cargo.toml` configuration file in a text editor.
+3. Locate the `[dependencies]` section and add the `pallet-node-authorization` crate to make it available to the node template runtime.
+
+```toml
 [dependencies]
 pallet-node-authorization = { default-features = false, version = "4.0.0-dev", git = "https://github.com/paritytech/substrate.git", branch = "polkadot-v0.9.28" }
+```
 
-This line imports the pallet-node-authorization crate as a dependency and specifies the following configuration details for the crate:
+This line imports the `pallet-node-authorization` crate as a dependency and specifies the following configuration details for the crate:
 
-The pallet features are not enabled by default when compiling the runtime.
-The version identifier for the crate.
-The repository location for retrieving the pallet-node-authorization crate.
-The branch for retrieving the crate.
-Note that you should use the same branch and version information for all pallets to ensure that they are compatible with each other. Using pallets from different branches can result in compiler errors. This example illustrates adding pallets to the Cargo.toml file if the other pallets use branch = "polkadot-v0.9.28".
+- The pallet features are not enabled by default when compiling the runtime.
+- The version identifier for the crate.
+- The repository location for retrieving the `pallet-node-authorization` crate.
+- The branch for retrieving the crate.
+Note that you should use the same branch and version information for all pallets to ensure that they are compatible with each other. Using pallets from different branches can result in compiler errors. This example illustrates adding pallets to the `Cargo.toml` file if the other pallets use `branch = "polkadot-v0.9.28"`.
+4. Add the `pallet-node-authorization/std` features to the list of features to enable when compiling the runtime.
 
-Add the pallet-node-authorization/std features to the list of features to enable when compiling the runtime.
-
+```toml
 [features]
 default = ['std']
 std = [
@@ -98,16 +109,19 @@ std = [
  "pallet-node-authorization/std",    # add this line
  ...
 ]
+```
 
-This section specifies the default feature set to compile for this runtime is the std features set. When the runtime is compiled using the std feature set, the std features from all of the pallets listed as dependencies are enabled. For more detailed information about how the runtime is compiled as a native Rust binary with the standard library and as a WebAssembly binary using the no_std attribute, see Build process.
+This section specifies the default feature set to compile for this runtime is the `std` features set. When the runtime is compiled using the `std` feature set, the `std` features from all of the pallets listed as dependencies are enabled. For more detailed information about how the runtime is compiled as a native Rust binary with the standard library and as a WebAssembly binary using the `no_std` attribute, see [Build process](https://docs.substrate.io/build/build-process/).
 
-If you forget to update the features section in the Cargo.toml file, you might see cannot find function errors when you compile the runtime binary.
+If you forget to update the `features` section in the `Cargo.toml` file, you might see `cannot find function` errors when you compile the runtime binary.
 
-Check that the new dependencies resolve correctly by running the following command:
+5. Check that the new dependencies resolve correctly by running the following command:
 
+```bash
 cargo check -p node-template-runtime --release
+```
 
-Add an administrative rule
+### Add an administrative rule
 To simulate governance in this tutorial, you can configure the pallet to use the EnsureRoot privileged function that can be called using the Sudo pallet. The Sudo pallet is included in the node template by default and enables you to make calls through the root-level administrative account. In a production environment, you would use more realistic governance-based checking.
 
 To enable the EnsureRoot rule in your runtime:
